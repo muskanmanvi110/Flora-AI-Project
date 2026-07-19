@@ -100,7 +100,7 @@ async def predict(file: UploadFile = File(...)):
     file_bytes = await file.read()
     input_array = preprocess_image(file_bytes)
 
-    predictions = model.predict(input_array, verbose=0)[0]  # shape: (NUM_CLASSES,)
+    predictions = model.predict(input_array, verbose=0)[0] 
 
     confidence_scores = {
         CLASS_NAMES[i]: round(float(predictions[i]), 4)
