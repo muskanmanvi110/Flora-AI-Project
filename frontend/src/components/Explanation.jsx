@@ -4,6 +4,7 @@ import axios from "axios";
 export default function Explanation({ result }) {
   const [explanation, setExplanation] = useState(null);
   const [loading, setLoading] = useState(false);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   async function generate() {
     setLoading(true);
