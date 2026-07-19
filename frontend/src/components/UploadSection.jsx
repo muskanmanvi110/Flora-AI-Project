@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { ImageIcon } from "lucide-react";
-im
 
 export default function UploadSection({ setResult }) {
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
 
   function handleImageChange(e) {
@@ -19,13 +19,20 @@ export default function UploadSection({ setResult }) {
     const formData = new FormData();
     formData.append("file", image);
 
+    setLoading(true);
+
     try {
-      const response = axios.post(`${API_URL}/predict`, formData);
+      const response = await axios.post(
+        `${API_URL}/predict`,
+        formData
+      );
 
       setResult(response.data);
     } catch (error) {
       console.error(error);
       alert("Prediction failed.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -67,13 +74,20 @@ export default function UploadSection({ setResult }) {
           {image ? image.name : "No file selected"}
         </p>
 
-        <label className="cursor-pointer rounded border-2 border-[#3d2c34] px-8 py-4 text-2xl font-semibold text-[#3d2c34] transition hover:bg-gray-100">
+        <label
+          className={`rounded border-2 border-[#3d2c34] px-8 py-4 text-2xl font-semibold text-[#3d2c34] transition ${
+            loading
+              ? "cursor-not-allowed opacity-50"
+              : "cursor-pointer hover:bg-gray-100"
+          }`}
+        >
           Choose image
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
             className="hidden"
+            disabled={loading}
           />
         </label>
       </div>
@@ -81,14 +95,14 @@ export default function UploadSection({ setResult }) {
       {/* Predict Button */}
       <button
         onClick={handlePredict}
-        disabled={!image}
+        disabled={!image || loading}
         className={`mt-10 w-full rounded py-6 text-4xl font-serif font-bold text-white transition ${
-          image
-            ? "bg-pink-700 hover:bg-pink-800 cursor-pointer"
-            : "bg-pink-200 cursor-not-allowed"
+          !image || loading
+            ? "bg-pink-200 cursor-not-allowed"
+            : "bg-pink-700 hover:bg-pink-800 cursor-pointer"
         }`}
       >
-        Identify flower
+        {loading ? "Loading..." : "Identify flower"}
       </button>
     </div>
   );
