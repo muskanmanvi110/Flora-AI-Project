@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+tensorflow
+numpy
+pillow
+python-multipart
+google-genai
+pydantic
+langchain-core
+python-dotenv
