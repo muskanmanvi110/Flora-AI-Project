@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { ImageIcon } from "lucide-react";
+im
 
 export default function UploadSection({ setResult }) {
   const [image, setImage] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   function handleImageChange(e) {
     if (e.target.files && e.target.files[0]) {
@@ -18,10 +20,7 @@ export default function UploadSection({ setResult }) {
     formData.append("file", image);
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/predict",
-        formData
-      );
+      const response = axios.post(`${API_URL}/predict`, formData);
 
       setResult(response.data);
     } catch (error) {

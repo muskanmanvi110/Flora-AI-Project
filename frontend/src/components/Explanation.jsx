@@ -9,9 +9,9 @@ export default function Explanation({ result }) {
     setLoading(true);
     try {
       const response = await axios.post(
-        `http://127.0.0.1:8000/explain?flower_name=${result.predicted_class}`
-      );
-      setExplanation(response.data.explanation);
+        `${API_URL}/explain?flower_name=${result.predicted_class}`
+    );
+    setExplanation(response.data.explanation);
     } finally {
       setLoading(false);
     }
